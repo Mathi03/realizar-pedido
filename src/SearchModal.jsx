@@ -78,7 +78,6 @@ const Modal = ({ open, setSku }) => {
                       <th scope="col">Sku</th>
                       <th scope="col">Articulo</th>
                       <th scope="col">Nombre</th>
-                      <th scope="col">Stock</th>
                       <th scope="col">Imagen</th>
                       <th scope="col">Seleccionar</th>
                     </tr>
@@ -89,7 +88,6 @@ const Modal = ({ open, setSku }) => {
                         <td>{p[0]}</td>
                         <td>{p[1]}</td>
                         <td>{p[2]}</td>
-                        <td>{p[3]}</td>
                         <td>
                           <img src={p[4]} width="50" />
                         </td>

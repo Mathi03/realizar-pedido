@@ -4,17 +4,22 @@ import { useSelector } from "react-redux";
 const Total = () => {
   const order = useSelector((state) => state.counter.order);
   const subTotal = order.reduce(
-    (acumulador, actual) => acumulador + parseFloat(actual.priceList),
+    (acumulador, actual) =>
+      acumulador + parseFloat(actual.priceList) * parseFloat(actual.quantity),
     0
-  );
+  ).toFixed(2);
   const totalDirector = order.reduce(
-    (acumulador, actual) => acumulador + parseFloat(actual.priceOfferDirector),
+    (acumulador, actual) =>
+      acumulador +
+      parseFloat(actual.priceOfferDirector) * parseFloat(actual.quantity),
     0
-  );
+  ).toFixed(2);
   const totalPartner = order.reduce(
-    (acumulador, actual) => acumulador + parseFloat(actual.priceOfferPartner),
+    (acumulador, actual) =>
+      acumulador +
+      parseFloat(actual.priceOfferPartner) * parseFloat(actual.quantity),
     0
-  );
+  ).toFixed(2);
 
   useEffect(() => {
     console.log("total");

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import Cart from "./Cart";
 import Total from "./Total";
 import Persona from "./Persona";
-import { addPartners } from "./store/PersonaSlice";
+import { addPartners, cleanValues } from "./store/PersonaSlice";
+import { cleanOrder } from "./store/OrderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import url from "./Setting";
+import Swal from "sweetalert2";
 
 const App = () => {
   const [pila, setPila] = useState(1);
@@ -14,6 +16,7 @@ const App = () => {
 
   const order = useSelector((state) => state.counter.order);
   const partner = useSelector((state) => state.persona.select);
+  const date = useSelector((state) => state.persona.date);
 
   useEffect(() => {
     const searchPartners = async () => {
@@ -36,48 +39,16 @@ const App = () => {
     searchPartners();
   }, []);
 
-  const nextPage = () => {
-    setPila(pila + 1);
-    console.log("next page", pila);
+  const handleNotify = (type, title, message) => {
+    Swal.fire({
+      icon: type,
+      title: title,
+      text: message,
+    });
   };
-
-  const backPage = () => {
-    setPila(pila - 1);
-    console.log("back page", pila);
-  };
-
   const generateOrder = async () => {
-    console.log("generando orden", order, partner);
-    if (order.length !== 0 && partner) {
-      // let tempOrder = [
-      //   {
-      //     image:
-      //       "https://sip.footloose.pe/web/_images/1x/585_106611_00010010_040_2_168_001.jpg",
-      //     name: "FOOTLOOSE FCH-WL021 (35-40) TRIXI - M SINTETICO NEGRO-38.0",
-      //     priceList: "74.90",
-      //     priceOfferDirector: "20.88",
-      //     priceOfferPartner: "20.88",
-      //     quantity: "1",
-      //     quantityInput: false,
-      //     sku: "18805085884",
-      //     stock: 20,
-      //     state: 44,
-      //   },
-      //   {
-      //     image:
-      //       "https://sip.footloose.pe/web/_images/1x/585_106611_00010010_040_2_168_001.jpg",
-      //     name: "FOOTLOOSE FCH-WL021 (35-40) TRIXI - M SINTETICO NEGRO-35.0",
-      //     priceList: "69.90",
-      //     priceOfferDirector: "27.88",
-      //     priceOfferPartner: "27.88",
-      //     quantity: "3",
-      //     quantityInput: false,
-      //     sku: "18805085883",
-      //     stock: 25,
-      //     state: 44,
-      //   },
-      // ];
-
+    console.log("generando orden", order, partner, date);
+    if (order.length !== 0 && partner && date) {
       let tempXML = "<Root>";
       order.map((o, i) => {
         i++;
@@ -105,12 +76,21 @@ const App = () => {
         })
         .then((resp) => {
           console.log("POST", resp);
+          handleNotify("success", "La order fue grabado con exito.");
+          dispatch(cleanValues());
+          dispatch(cleanOrder());
         })
         .catch((err) => {
           console.log("err", err);
+          handleNotify("error", "Error con la peticion de grabado");
         });
     } else {
       console.log("VACIO");
+      handleNotify(
+        "error",
+        "Oops...",
+        "Debe agregar al menos una order y seleccionar un socio"
+      );
     }
   };
 

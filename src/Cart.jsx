@@ -2,7 +2,8 @@ import React from "react";
 import Modal from "./SearchModal";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./store/OrderSlice";
-import { selectPartner } from "./store/PersonaSlice";
+import { selectPartner, setDate } from "./store/PersonaSlice";
+import { Input } from "react-rainbow-components";
 import axios from "axios";
 import url from "./Setting";
 
@@ -96,15 +97,14 @@ const Cart = () => {
     let partner = e.target.value;
     dispatch(selectPartner(partner));
   };
-
   return (
     <div>
       <div className="border rounded mb-4">
-        <div className="card-body">
+        <div className="card-body row">
           <div className="col-sm-12 my-1">
             <div className="h5">Escoger un Socio</div>
           </div>
-          <div className="col-sm-12 my-1">
+          <div className="col-sm-8 my-1">
             <div className="input-group">
               <div className="input-group-prepend">
                 <div className="input-group-text">
@@ -120,6 +120,22 @@ const Cart = () => {
               </select>
             </div>
             <small className="form-text text-muted">Seleccionar Socio.</small>
+          </div>
+          <div className="col-sm-4 my-1">
+            <div className="input-group">
+              <Input
+                type="date"
+                className="rainbow-p-around_medium"
+                onChange={(e) => {
+                  // var date = new Date(e.target.valueAsNumber);
+                  // console.log("date", formatDate(date));
+                  dispatch(setDate(e.target.valueAsNumber));
+                }}
+              />
+            </div>
+            <small className="form-text text-muted">
+              Seleccionar fecha de Cierre
+            </small>
           </div>
         </div>
       </div>
@@ -301,12 +317,9 @@ const Cart = () => {
                         <div>Precio Unit.</div>
                         <div className="text-center">
                           <div className="row">
-                            <div
-                              className="col-12 text-right" // style={{ "text-decoration": "line-through" }}
-                            >
+                            <div className="col-12 text-right">
                               {p.priceList}
                             </div>
-                            <div className="col-12 text-right">54.87</div>
                           </div>
                         </div>
                       </div>
@@ -322,14 +335,38 @@ const Cart = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-2 col-md-3 col-sm-4 col-12 text-center">
                       <div className="d-flex justify-content-between align-items-center">
-                        <div>Precio Total</div>
+                        <div>Estado</div>
                         <div className="text-center">
                           <div className="row">
                             <div className="col-12 text-right">
-                              {p.priceOffer}
+                              {p.state == 44
+                                ? "Separado"
+                                : p.state == 45
+                                ? "Por Revisar"
+                                : ""}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-2 col-md-3 col-sm-4 col-12 text-center">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>Precio Total Socio</div>
+                        <div className="text-center">
+                          <div className="row">
+                            <div className="col-12 text-right">
+                              {p.priceOfferPartner}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>Precio Total Director</div>
+                        <div className="text-center">
+                          <div className="row">
+                            <div className="col-12 text-right">
+                              {p.priceOfferDirector}
                             </div>
                           </div>
                         </div>
