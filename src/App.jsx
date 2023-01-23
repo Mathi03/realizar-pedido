@@ -7,7 +7,7 @@ import { cleanOrder } from "./store/OrderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import url from "./Setting";
-import Swal from "sweetalert2";
+import notify from "./components/Notify";
 
 const App = () => {
   const [pila, setPila] = useState(1);
@@ -23,11 +23,12 @@ const App = () => {
       await axios
         .get(url + "?personaId=" + PERSON_ID + "&isDirector=true")
         .then((resp) => {
-          let temp = [{ value: "", name: "Selecciona un Socio" }];
+          // let temp = [{ value: "", label: "Selecciona un Socio" }];
+          let temp = [];
           resp.data.map((s) => {
             let part = {};
             part.value = s[0];
-            part.name = s[1];
+            part.label = s[1];
             temp.push(part);
           });
           dispatch(addPartners(temp));
@@ -39,13 +40,6 @@ const App = () => {
     searchPartners();
   }, []);
 
-  const handleNotify = (type, title, message) => {
-    Swal.fire({
-      icon: type,
-      title: title,
-      text: message,
-    });
-  };
   const generateOrder = async () => {
     console.log("generando orden", order, partner, date);
     if (order.length !== 0 && partner && date) {
@@ -76,17 +70,17 @@ const App = () => {
         })
         .then((resp) => {
           console.log("POST", resp);
-          handleNotify("success", "La order fue grabado con exito.");
+          notify("success", "La order fue grabado con exito.");
           dispatch(cleanValues());
           dispatch(cleanOrder());
         })
         .catch((err) => {
           console.log("err", err);
-          handleNotify("error", "Error con la peticion de grabado");
+          notify("error", "Error con la peticion de grabado");
         });
     } else {
       console.log("VACIO");
-      handleNotify(
+      notify(
         "error",
         "Oops...",
         "Debe agregar al menos una order y seleccionar un socio"

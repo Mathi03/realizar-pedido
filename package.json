@@ -13,10 +13,10 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
+    "antd": "^5.1.6",
     "core-js": "^3.26.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-rainbow-components": "^1.31.0",
     "react-redux": "^8.0.5",
     "sweetalert2": "^11.6.16"
   },

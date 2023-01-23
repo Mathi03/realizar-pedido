@@ -3,9 +3,9 @@ import Modal from "./SearchModal";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "./store/OrderSlice";
 import { selectPartner, setDate } from "./store/PersonaSlice";
-import { Input } from "react-rainbow-components";
 import axios from "axios";
 import url from "./Setting";
+import { DatePicker, Select } from "antd";
 
 const Cart = () => {
   const order = useSelector((state) => state.counter.order);
@@ -93,9 +93,8 @@ const Cart = () => {
     dispatch(decrement(k));
   };
 
-  const handleSelectOnChange = (e) => {
-    let partner = e.target.value;
-    dispatch(selectPartner(partner));
+  const handleSelectOnChange = (v) => {
+    dispatch(selectPartner(v));
   };
   return (
     <div>
@@ -111,25 +110,30 @@ const Cart = () => {
                   <i className="fas fa-users"></i>
                 </div>
               </div>
-              <select className="custom-select" onChange={handleSelectOnChange}>
-                {partners.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.name}
-                  </option>
-                ))}
-              </select>
+              <Select
+                showSearch
+                placeholder="Selecciona un Socio"
+                onChange={handleSelectOnChange}
+                style={{ width: "80%" }}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={partners}
+              />
             </div>
             <small className="form-text text-muted">Seleccionar Socio.</small>
           </div>
           <div className="col-sm-4 my-1">
             <div className="input-group">
-              <Input
-                type="date"
-                className="rainbow-p-around_medium"
-                onChange={(e) => {
+              <DatePicker
+                format={"YYYY-MM-DD"}
+                placeholder="Seleccionar fecha Cierre"
+                onChange={(date, dateString) => {
                   // var date = new Date(e.target.valueAsNumber);
-                  // console.log("date", formatDate(date));
-                  dispatch(setDate(e.target.valueAsNumber));
+                  // console.log("date", date, dateString);
+                  dispatch(setDate(dateString));
                 }}
               />
             </div>

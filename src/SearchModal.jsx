@@ -1,6 +1,7 @@
 import React from "react";
-import axios from "axios"
+import axios from "axios";
 import url from "./Setting";
+import notify from "./components/Notify";
 
 const Modal = ({ open, setSku }) => {
   const [arrayProducts, setArrayProducts] = React.useState([]);
@@ -33,7 +34,12 @@ const Modal = ({ open, setSku }) => {
       })
       .catch((err) => {
         console.log("err", err);
-        return err.response.statusText;
+        notify(
+          "error",
+          "Error al obtener lista.",
+          "Error: " + err.response.statusText
+        );
+        return [];
       });
     // if (response.status === false) return response.statusText;
     // return response.data;

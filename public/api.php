@@ -15,6 +15,7 @@ if (isset($_GET["model"]) && isset($_GET["isList"])) {
             ["18805089594", "ZAPATILLAS", "R18 R18-CY020 (35-39) - M TEXTIL LILA-37.0", "4", "https://sip.footloose.pe/web/_images/1x/717_106836_00010007_052_2_142_001.jpg"]
         ];
         $optionsLength = count($rs);
+        // $optionsLength = count(array());
         if ($optionsLength > 0) {
             echo json_encode(utf8_converter($rs));
             exit();

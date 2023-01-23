@@ -1,21 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-function formatDate(date) {
-  var d = new Date(date),
-    month = "" + (d.getMonth() + 1),
-    day = "" + (d.getDate() + 1),
-    year = d.getFullYear();
-
-  if (month.length < 2) {
-    month = "0" + month;
-  }
-  if (day.length < 2) {
-    day = "0" + day;
-  }
-
-  return [year, month, day].join("-");
-}
-
 export const personaSlice = createSlice({
   name: "persona",
   initialState: {
@@ -32,7 +16,7 @@ export const personaSlice = createSlice({
       state.select = action.payload;
     },
     setDate: (state, action) => {
-      state.date = formatDate(action.payload);
+      state.date = action.payload;
     },
     cleanValues: (state, action) => {
       state.select = "";
