@@ -19,6 +19,7 @@ const App = () => {
   const date = useSelector((state) => state.persona.date);
 
   useEffect(() => {
+    console.log(url);
     // const searchPartners = async () => {
     //   await axios
     //     .get(url + "?personaId=" + PERSON_ID + "&isDirector=true")
