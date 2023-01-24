@@ -118,7 +118,7 @@ const Cart = () => {
     // currentValue = value;
     // const fake = () => {
     await axios
-      .get(url + "?personaId=" + currentValue + "&isDirector=true")
+      .get(url + "?personaId=" + value + "&isDirector=true")
       .then((response) => {
         console.log(response);
         //response.json()
