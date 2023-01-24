@@ -10,8 +10,8 @@ import SearchModal from "./SearchModal2";
 
 const Cart = () => {
   const order = useSelector((state) => state.counter.order);
-  // const partners = useSelector((state) => state.persona.partners);
-  const [partners, setPartners] = React.useState([]);
+  const partners = useSelector((state) => state.persona.partners);
+
   const dispatch = useDispatch();
 
   const [openModal, setOpenModal] = React.useState(false);
@@ -108,47 +108,6 @@ const Cart = () => {
     setIsModalOpen(false);
   };
 
-  // let timeout;
-  // let currentValue;
-  const fetch = async (value, callback) => {
-    // if (timeout) {
-    //   clearTimeout(timeout);
-    //   timeout = null;
-    // }
-    // currentValue = value;
-    // const fake = () => {
-    await axios
-      .get(url + "?personaId=" + value + "&isDirector=true")
-      .then((response) => {
-        console.log(response);
-        //response.json()
-        return response.data;
-      })
-      .then((d) => {
-        // if (currentValue === value) {
-        // const { result } = d;
-        console.log("resp", d);
-        const data = d.map((item) => ({
-          value: item[0],
-          text: item[1],
-        }));
-        callback(data);
-        // }
-      });
-    // };
-    // timeout = setTimeout(fake, 300);
-  };
-
-  const handleSearch = (newValue) => {
-    if (newValue.length >= 5) {
-      if (newValue) {
-        fetch(newValue, setPartners);
-      } else {
-        setPartners([]);
-      }
-    }
-  };
-
   return (
     <div>
       <div className="border rounded mb-4">
@@ -168,17 +127,12 @@ const Cart = () => {
                 placeholder="Selecciona un Socio"
                 onChange={handleSelectOnChange}
                 style={{ width: "80%" }}
-                onSearch={handleSearch}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                // options={partners}
-                options={(partners || []).map((d) => ({
-                  value: d.value,
-                  label: d.text,
-                }))}
+                options={partners}
               />
             </div>
             <small className="form-text text-muted">Seleccionar Socio.</small>
