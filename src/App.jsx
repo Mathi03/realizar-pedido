@@ -19,25 +19,25 @@ const App = () => {
   const date = useSelector((state) => state.persona.date);
 
   useEffect(() => {
-    const searchPartners = async () => {
-      await axios
-        .get(url + "?personaId=" + PERSON_ID + "&isDirector=true")
-        .then((resp) => {
-          // let temp = [{ value: "", label: "Selecciona un Socio" }];
-          let temp = [];
-          resp.data.map((s) => {
-            let part = {};
-            part.value = s[0];
-            part.label = s[1];
-            temp.push(part);
-          });
-          dispatch(addPartners(temp));
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    };
-    searchPartners();
+    // const searchPartners = async () => {
+    //   await axios
+    //     .get(url + "?personaId=" + PERSON_ID + "&isDirector=true")
+    //     .then((resp) => {
+    //       // let temp = [{ value: "", label: "Selecciona un Socio" }];
+    //       let temp = [];
+    //       resp.data.map((s) => {
+    //         let part = {};
+    //         part.value = s[0];
+    //         part.label = s[1];
+    //         temp.push(part);
+    //       });
+    //       dispatch(addPartners(temp));
+    //     })
+    //     .catch((err) => {
+    //       console.log("err", err);
+    //     });
+    // };
+    // searchPartners();
   }, []);
 
   const generateOrder = async () => {

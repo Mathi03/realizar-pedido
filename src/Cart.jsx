@@ -6,13 +6,16 @@ import { selectPartner, setDate } from "./store/PersonaSlice";
 import axios from "axios";
 import url from "./Setting";
 import { DatePicker, Select } from "antd";
+import SearchModal from "./SearchModal2";
 
 const Cart = () => {
   const order = useSelector((state) => state.counter.order);
-  const partners = useSelector((state) => state.persona.partners);
+  // const partners = useSelector((state) => state.persona.partners);
+  const [partners, setPartners] = React.useState([]);
   const dispatch = useDispatch();
 
   const [openModal, setOpenModal] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [sku, setSku] = React.useState("");
   const [data, setData] = React.useState({
     sku: "",
@@ -96,6 +99,56 @@ const Cart = () => {
   const handleSelectOnChange = (v) => {
     dispatch(selectPartner(v));
   };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  // let timeout;
+  // let currentValue;
+  const fetch = async (value, callback) => {
+    // if (timeout) {
+    //   clearTimeout(timeout);
+    //   timeout = null;
+    // }
+    // currentValue = value;
+    // const fake = () => {
+    await axios
+      .get(url + "?personaId=" + currentValue + "&isDirector=true")
+      .then((response) => {
+        console.log(response);
+        //response.json()
+        return response.data;
+      })
+      .then((d) => {
+        // if (currentValue === value) {
+        // const { result } = d;
+        console.log("resp", d);
+        const data = d.map((item) => ({
+          value: item[0],
+          text: item[1],
+        }));
+        callback(data);
+        // }
+      });
+    // };
+    // timeout = setTimeout(fake, 300);
+  };
+
+  const handleSearch = (newValue) => {
+    if (newValue.length >= 7) {
+      if (newValue) {
+        fetch(newValue, setPartners);
+      } else {
+        setPartners([]);
+      }
+    }
+  };
+
   return (
     <div>
       <div className="border rounded mb-4">
@@ -115,12 +168,17 @@ const Cart = () => {
                 placeholder="Selecciona un Socio"
                 onChange={handleSelectOnChange}
                 style={{ width: "80%" }}
+                onSearch={handleSearch}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                options={partners}
+                // options={partners}
+                options={(partners || []).map((d) => ({
+                  value: d.value,
+                  label: d.text,
+                }))}
               />
             </div>
             <small className="form-text text-muted">Seleccionar Socio.</small>
@@ -129,6 +187,7 @@ const Cart = () => {
             <div className="input-group">
               <DatePicker
                 format={"YYYY-MM-DD"}
+                style={{ width: "80%" }}
                 placeholder="Seleccionar fecha Cierre"
                 onChange={(date, dateString) => {
                   // var date = new Date(e.target.valueAsNumber);
@@ -173,7 +232,7 @@ const Cart = () => {
               <a
                 href="#"
                 className="btn btn-primary btn-block"
-                onClick={() => setOpenModal(true)}
+                onClick={() => setIsModalOpen(true)}
               >
                 <i className="fas fa-search"></i> Buscar Producto
               </a>
@@ -396,6 +455,12 @@ const Cart = () => {
         </div>
       </div>
       {openModal && <Modal open={setOpenModal} setSku={setSku} />}
+      <SearchModal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        setSku={setSku}
+      />
     </div>
   );
 };
