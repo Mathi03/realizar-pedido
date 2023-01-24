@@ -140,7 +140,7 @@ const Cart = () => {
   };
 
   const handleSearch = (newValue) => {
-    if (newValue.length >= 7) {
+    if (newValue.length >= 5) {
       if (newValue) {
         fetch(newValue, setPartners);
       } else {
