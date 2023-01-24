@@ -6,6 +6,7 @@ if (URLActual === "localhost" || URLActual === "127.0.0.1") {
 if (
   URLActual === "catalogo.footloose.pe" ||
   URLActual === "192.168.3.70" ||
+  URLActual === "sip.footloose.pe" ||
   URLActual === "scriptcase.footloose.pe"
 ) {
   url = "../catalogo_api_blank/catalogo_api_blank.php";
