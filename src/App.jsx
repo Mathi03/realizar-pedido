@@ -19,26 +19,8 @@ const App = () => {
   const date = useSelector((state) => state.persona.date);
 
   useEffect(() => {
-    console.log(url);
-    // const searchPartners = async () => {
-    //   await axios
-    //     .get(url + "?personaId=" + PERSON_ID + "&isDirector=true")
-    //     .then((resp) => {
-    //       // let temp = [{ value: "", label: "Selecciona un Socio" }];
-    //       let temp = [];
-    //       resp.data.map((s) => {
-    //         let part = {};
-    //         part.value = s[0];
-    //         part.label = s[1];
-    //         temp.push(part);
-    //       });
-    //       dispatch(addPartners(temp));
-    //     })
-    //     .catch((err) => {
-    //       console.log("err", err);
-    //     });
-    // };
-    // searchPartners();
+    console.log("Url Setting", url);
+    console.log("Url Global", URL);
   }, []);
 
   const generateOrder = async () => {

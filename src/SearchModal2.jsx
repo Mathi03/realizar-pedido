@@ -3,51 +3,10 @@ import axios from "axios";
 import url from "./Setting";
 import notify from "./components/Notify";
 import { Button, Input, Modal, Table } from "antd";
+const { Column } = Table;
 
 const SearchModal = ({ open, setSku, onOk, onCancel }) => {
   const [arrayProducts, setArrayProducts] = React.useState([]);
-  const formatColumns = [
-    {
-      title: "Sku",
-      dataIndex: "sku",
-      key: "sku",
-      responsive: ["sm"],
-    },
-    {
-      title: "Articulo",
-      dataIndex: "article",
-      key: "article",
-      responsive: ["sm"],
-    },
-    {
-      title: "Nombre",
-      dataIndex: "name",
-      key: "name",
-      responsive: ["sm"],
-    },
-    {
-      title: "Imagen",
-      dataIndex: "image",
-      key: "image",
-      responsive: ["sm"],
-      render: (_, record) => <img src={record.image} width="50" />,
-    },
-    {
-      title: "Seleccionar",
-      key: "action",
-      responsive: ["sm"],
-      render: (_, record) => (
-        <a
-          className="btn btn-primary"
-          href="#"
-          onClick={() => handleClickSelect(record.sku)}
-          key={record.sku}
-        >
-          <i className="fas fa-plus-square"></i>
-        </a>
-      ),
-    },
-  ];
 
   const handleKeyPressModelOrSku = async (e) => {
     let {
@@ -71,18 +30,7 @@ const SearchModal = ({ open, setSku, onOk, onCancel }) => {
       .get(url + "?model=" + model + "&isList=true")
       .then((resp) => {
         console.log("resp", resp);
-        let data = resp.data;
-        let temp = [];
-        data.map((item) => {
-          temp.push({
-            key: item[0],
-            sku: item[0],
-            article: item[1],
-            name: item[2],
-            image: item[4],
-          });
-        });
-        return temp;
+        return resp.data;
       })
       .catch((err) => {
         console.log("err", err);
@@ -115,7 +63,37 @@ const SearchModal = ({ open, setSku, onOk, onCancel }) => {
         placeholder="Buscar por SKU | Modelo"
         onPressEnter={handleKeyPressModelOrSku}
       />
-      <Table columns={formatColumns} dataSource={arrayProducts} />
+      <Table dataSource={arrayProducts} rowKey={[0]}>
+        <Column title="Sku" dataIndex={[0]} key="sku" />
+        <Column
+          title="Articulo"
+          dataIndex={[1]}
+          key="article"
+          responsive={["sm"]}
+        />
+        <Column title="Nombre" dataIndex={[2]} key="name" responsive={["sm"]} />
+        <Column
+          title="Imagen"
+          dataIndex={[4]}
+          key="image"
+          responsive={["sm"]}
+          render={(_, record) => <img src={record[4]} width="50" />}
+        />
+        <Column
+          title="Imagen"
+          key="image"
+          render={(_, record) => (
+            <a
+              className="btn btn-primary"
+              href="#"
+              onClick={() => handleClickSelect(record[0])}
+              key={record[0]}
+            >
+              <i className="fas fa-plus-square"></i>
+            </a>
+          )}
+        />
+      </Table>
     </Modal>
   );
 };

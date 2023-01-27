@@ -14,7 +14,8 @@ $_PERSON_ID = 762145;
     <body>
     <div id="root"></div>
   <script>
-    let PERSON_ID = "<?php echo $_PERSON_ID; ?>"
+    let PERSON_ID = "<?php echo $_PERSON_ID; ?>";
+    let URL = "api.php";
   </script>
     </body>
 </html>
